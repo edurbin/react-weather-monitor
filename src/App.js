@@ -1,25 +1,27 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { Header } from './Header/Header';
+import { WeatherDisplay } from './Weather/WeatherDisplay';
 import './App.css';
+import {WeatherService} from './Service/WeatherService';
+const weatherService = new WeatherService();
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: null,
+    }
+  }
+
+  componentDidMount() {
+    weatherService.getWeather('50129').then(data => this.setState({data}));
+  }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <Header title='React Weather Monitor'/>
+        <WeatherDisplay data={this.state.data}/>
       </div>
     );
   }
